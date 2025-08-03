@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WALEED-GITHUB - Repository Management Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background-color: #0d1117;
+            color: #e6edf3;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            border-radius: 12px;
+            border: 1px solid #30363d;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #58a6ff;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #8b949e;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section h2 {
+            color: #f0f6fc;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section h3 {
+            color: #f0f6fc;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #f0f6fc;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            background: #0d1117;
+            color: #e6edf3;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #238636;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2ea043;
+        }
+
+        .btn-secondary {
+            background: #21262d;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+        }
+
+        .btn-secondary:hover {
+            background: #30363d;
+        }
+
+        .btn-danger {
+            background: #da3633;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #f85149;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #30363d;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            color: #8b949e;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab.active {
+            color: #58a6ff;
+            border-bottom-color: #58a6ff;
+        }
+
+        .tab:hover {
+            color: #e6edf3;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .table th {
+            background: #21262d;
+            font-weight: 600;
+            color: #f0f6fc;
+        }
+
+        .table tr:hover {
+            background: #21262d;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .radio-option:hover {
+            background: #21262d;
+        }
+
+        .radio-option.selected {
+            border-color: #58a6ff;
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        .folder-structure {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .folder-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+            color: #e6edf3;
+        }
+
+        .folder-item.folder {
+            color: #58a6ff;
+            font-weight: 600;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background: rgba(35, 134, 54, 0.2);
+            color: #3fb950;
+        }
+
+        .status-error {
+            background: rgba(218, 54, 51, 0.2);
+            color: #f85149;
+        }
+
+        .status-warning {
+            background: rgba(187, 128, 9, 0.2);
+            color: #d29922;
+        }
+
+        .loading {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #30363d;
+            border-top: 2px solid #58a6ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #21262d;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #238636;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alert-success {
+            background: rgba(35, 134, 54, 0.2);
+            border: 1px solid #238636;
+            color: #3fb950;
+        }
+
+        .alert-error {
+            background: rgba(218, 54, 51, 0.2);
+            border: 1px solid #da3633;
+            color: #f85149;
+        }
+
+        .alert-info {
+            background: rgba(88, 166, 255, 0.2);
+            border: 1px solid #58a6ff;
+            color: #58a6ff;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            margin: 20px;
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #8b949e;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: #21262d;
+            color: #e6edf3;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding-top: 16px;
+            border-top: 1px solid #30363d;
+        }
+
+        /* Enhanced Tree View */
+        .tree-view {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .tree-item {
+            display: flex;
+            align-items: center;
+            padding: 2px 0;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .tree-item:hover {
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        .tree-item.folder {
+            color: #58a6ff;
+            font-weight: 600;
+        }
+
+        .tree-item.file {
+            color: #e6edf3;
+        }
+
+        .tree-indent {
+            width: 20px;
+            display: inline-block;
+        }
+
+        .tree-icon {
+            width: 16px;
+            margin-right: 6px;
+            text-align: center;
+        }
+
+        .tree-toggle {
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 4px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .tree-toggle:hover {
+            background: rgba(88, 166, 255, 0.2);
+        }
+
+        .tree-toggle.expanded::before {
+            content: '▼';
+            font-size: 10px;
+            color: #8b949e;
+        }
+
+        .tree-toggle.collapsed::before {
+            content: '▶';
+            font-size: 10px;
+            color: #8b949e;
+        }
+
+        .tree-children {
+            margin-left: 20px;
+        }
+
+        .tree-children.collapsed {
+            display: none;
+        }
+
+        /* Enhanced Progress Display */
+        .progress-details {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .progress-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #21262d;
+        }
+
+        .progress-item:last-child {
+            border-bottom: none;
+        }
+
+        .progress-file {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .progress-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .status-success {
+            background: #238636;
+            color: white;
+        }
+
+        .status-error {
+            background: #da3633;
+            color: white;
+        }
+
+        .status-processing {
+            background: #d29922;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Report Styles */
+        .report-section {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+
+        .report-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .report-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #f0f6fc;
+        }
+
+        .report-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .stat-card {
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: #8b949e;
+            font-size: 0.9rem;
+        }
+
+        .commit-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #58a6ff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border: 1px solid #58a6ff;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .commit-link:hover {
+            background: rgba(88, 166, 255, 0.1);
+            text-decoration: none;
+        }
+
+        .file-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            background: #0d1117;
+        }
+
+        .file-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border-bottom: 1px solid #21262d;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .file-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-list-item:hover {
+            background: #21262d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 WALEED-GITHUB</h1>
+            <p>Advanced GitHub Repository Management Tool</p>
+        </div>
+
+        <!-- File Browser Section -->
+        <div class="section">
+            <h2>📁 Source Files</h2>
+            <div class="form-group">
+                <label for="fileInput">Select Directory or Files</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" class="file-input" webkitdirectory multiple>
+                    <button class="btn btn-secondary">
+                        📂 Browse Source Files
+                    </button>
+                </div>
+            </div>
+            <div id="selectedFiles" class="hidden">
+                <h3>Selected Files Structure:</h3>
+                <div id="folderStructure" class="folder-structure"></div>
+            </div>
+        </div>
+
+        <!-- GitHub Authentication -->
+        <div class="section">
+            <h2>🔐 GitHub Authentication</h2>
+            <div class="form-group">
+                <label for="githubToken">Personal Access Token</label>
+                <input type="password" id="githubToken" class="form-control"
+                       placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                <small style="color: #8b949e; margin-top: 4px; display: block;">
+                    Generate a token at: <a href="https://github.com/settings/tokens" target="_blank" style="color: #58a6ff;">GitHub Settings</a>
+                </small>
+            </div>
+            <button id="validateToken" class="btn btn-primary">
+                🔍 Validate Token
+            </button>
+            <div id="tokenStatus" class="hidden"></div>
+        </div>
+
+        <!-- Repository Management -->
+        <div id="repoManagement" class="section hidden">
+            <h2>📚 Repository Management</h2>
+
+            <div class="tabs">
+                <button class="tab active" data-tab="browse">Browse All Repositories</button>
+                <button class="tab" data-tab="direct">Direct Repository URL</button>
+                <button class="tab" data-tab="create">Create New Repository</button>
+            </div>
+
+            <!-- Browse Repositories Tab -->
+            <div id="browseTab" class="tab-content active">
+                <div class="form-group">
+                    <input type="text" id="repoSearch" class="form-control"
+                           placeholder="🔍 Search repositories...">
+                </div>
+                <div id="repoList"></div>
+            </div>
+
+            <!-- Direct URL Tab -->
+            <div id="directTab" class="tab-content">
+                <div class="form-group">
+                    <label for="repoUrl">Repository URL</label>
+                    <input type="url" id="repoUrl" class="form-control"
+                           placeholder="https://github.com/username/repository">
+                </div>
+                <button id="validateUrl" class="btn btn-primary">
+                    ✅ Validate Repository
+                </button>
+                <div id="urlStatus" class="hidden"></div>
+            </div>
+
+            <!-- Create Repository Tab -->
+            <div id="createTab" class="tab-content">
+                <div class="grid">
+                    <div class="form-group">
+                        <label for="newRepoName">Repository Name</label>
+                        <input type="text" id="newRepoName" class="form-control"
+                               placeholder="my-awesome-project">
+                    </div>
+                    <div class="form-group">
+                        <label for="newRepoVisibility">Visibility</label>
+                        <select id="newRepoVisibility" class="form-control">
+                            <option value="false">🔓 Public</option>
+                            <option value="true">🔒 Private</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newRepoDescription">Description (Optional)</label>
+                    <textarea id="newRepoDescription" class="form-control" rows="3"
+                              placeholder="A brief description of your repository..."></textarea>
+                </div>
+                <button id="createRepo" class="btn btn-primary">
+                    ➕ Create Repository
+                </button>
+                <div id="createStatus" class="hidden"></div>
+            </div>
+        </div>
+
+        <!-- Branch Selection -->
+        <div id="branchSelection" class="section hidden">
+            <h2>🌿 Branch Selection</h2>
+            <div class="form-group">
+                <label for="branchSelect">Target Branch</label>
+                <select id="branchSelect" class="form-control">
+                    <option value="">Loading branches...</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Action Selection -->
+        <div id="actionSelection" class="section hidden">
+            <h2>⚡ Actions</h2>
+            <div class="radio-group">
+                <div class="radio-option" data-action="push">
+                    <input type="radio" name="action" value="push" id="actionPush">
+                    <label for="actionPush">
+                        <strong>📤 Push Only</strong><br>
+                        <small>Upload files to existing repository</small>
+                    </label>
+                </div>
+                <div class="radio-option" data-action="commit">
+                    <input type="radio" name="action" value="commit" id="actionCommit">
+                    <label for="actionCommit">
+                        <strong>💾 Push and Commit</strong><br>
+                        <small>Upload files and create a new commit</small>
+                    </label>
+                </div>
+                <div class="radio-option" data-action="pr">
+                    <input type="radio" name="action" value="pr" id="actionPR">
+                    <label for="actionPR">
+                        <strong>🔀 Create Pull Request</strong><br>
+                        <small>Upload to new branch and create pull request</small>
+                    </label>
+                </div>
+            </div>
+
+            <div id="commitOptions" class="hidden">
+                <div class="form-group">
+                    <label for="commitMessage">Commit Message</label>
+                    <input type="text" id="commitMessage" class="form-control"
+                           placeholder="Update files via WALEED-GITHUB">
+                </div>
+            </div>
+
+            <div id="prOptions" class="hidden">
+                <div class="grid">
+                    <div class="form-group">
+                        <label for="prBranch">New Branch Name</label>
+                        <input type="text" id="prBranch" class="form-control"
+                               placeholder="feature/new-changes">
+                    </div>
+                    <div class="form-group">
+                        <label for="prTitle">Pull Request Title</label>
+                        <input type="text" id="prTitle" class="form-control"
+                               placeholder="Add new features">
+                    </div>
+                </div>
+            </div>
+
+            <button id="executeAction" class="btn btn-primary" disabled>
+                🚀 Execute Action
+            </button>
+        </div>
+
+        <!-- Progress and Status -->
+        <div id="progressSection" class="section hidden">
+            <h2>📊 Progress</h2>
+            <div id="progressBar" class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <div id="progressText">Ready to start...</div>
+            <div id="progressDetails" class="progress-details hidden"></div>
+            <div id="statusMessages"></div>
+        </div>
+
+        <!-- Final Report -->
+        <div id="reportSection" class="section hidden">
+            <h2>📋 Operation Report</h2>
+            <div id="reportContent"></div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">🔍 Confirm Operation</h3>
+                <button class="modal-close" onclick="closeConfirmationModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="confirmationDetails"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeConfirmationModal()">
+                    ❌ Cancel
+                </button>
+                <button id="confirmExecute" class="btn btn-primary">
+                    ✅ Confirm & Execute
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        const state = {
+            token: '',
+            selectedFiles: [],
+            selectedRepo: null,
+            selectedBranch: 'main',
+            repositories: [],
+            user: null
+        };
+
+        // Utility Functions
+        function showElement(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function hideElement(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function showAlert(message, type = 'info', containerId = 'statusMessages') {
+            const container = document.getElementById(containerId);
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <span>${getAlertIcon(type)}</span>
+                <span>${message}</span>
+            `;
+            container.appendChild(alert);
+
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.parentNode.removeChild(alert);
+                }
+            }, 5000);
+        }
+
+        function getAlertIcon(type) {
+            const icons = {
+                success: '✅',
+                error: '❌',
+                info: 'ℹ️',
+                warning: '⚠️'
+            };
+            return icons[type] || 'ℹ️';
+        }
+
+        function updateProgress(percent, text) {
+            document.getElementById('progressFill').style.width = `${percent}%`;
+            document.getElementById('progressText').textContent = text;
+        }
+
+        // GitHub API Functions
+        async function makeGitHubRequest(endpoint, options = {}) {
+            const url = `https://api.github.com${endpoint}`;
+            const headers = {
+                'Authorization': `token ${state.token}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json',
+                ...options.headers
+            };
+
+            try {
+                const response = await fetch(url, {
+                    ...options,
+                    headers
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || `HTTP ${response.status}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('GitHub API Error:', error);
+                throw error;
+            }
+        }
+
+        // File Handling
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+
+            state.selectedFiles = files;
+            displayFolderStructure(files);
+            showElement('selectedFiles');
+
+            // Enable next steps if token is validated
+            if (state.token) {
+                showElement('repoManagement');
+            }
+        });
+
+        function displayFolderStructure(files) {
+            const structure = buildFolderStructure(files);
+            const container = document.getElementById('folderStructure');
+            container.className = 'folder-structure tree-view';
+            container.innerHTML = renderFolderStructure(structure);
+
+            // Add click handlers for tree toggles
+            container.addEventListener('click', function(e) {
+                if (e.target.classList.contains('tree-toggle')) {
+                    const children = e.target.parentElement.nextElementSibling;
+                    if (children && children.classList.contains('tree-children')) {
+                        children.classList.toggle('collapsed');
+                        e.target.classList.toggle('expanded');
+                        e.target.classList.toggle('collapsed');
+                    }
+                }
+            });
+        }
+
+        function buildFolderStructure(files) {
+            const structure = {};
+
+            files.forEach(file => {
+                const pathParts = file.webkitRelativePath.split('/');
+                let current = structure;
+
+                pathParts.forEach((part, index) => {
+                    if (index === pathParts.length - 1) {
+                        // It's a file
+                        if (!current._files) current._files = [];
+                        current._files.push(file);
+                    } else {
+                        // It's a folder
+                        if (!current[part]) {
+                            current[part] = {};
+                        }
+                        current = current[part];
+                    }
+                });
+            });
+
+            return structure;
+        }
+
+        function renderFolderStructure(structure, level = 0) {
+            let html = '';
+
+            // Render folders first
+            Object.keys(structure).forEach(key => {
+                if (key === '_files') return;
+
+                const folder = structure[key];
+                const fileCount = countFiles(folder);
+                const hasChildren = Object.keys(folder).length > 0;
+
+                html += `
+                    <div class="tree-item folder">
+                        <span class="tree-indent" style="width: ${level * 20}px"></span>
+                        ${hasChildren ? `<span class="tree-toggle expanded"></span>` : '<span class="tree-icon">📁</span>'}
+                        <span class="tree-icon">📁</span>
+                        <span>${key} (${fileCount} files)</span>
+                    </div>
+                `;
+
+                if (hasChildren) {
+                    html += `<div class="tree-children">`;
+                    html += renderFolderStructure(folder, level + 1);
+                    html += `</div>`;
+                }
+            });
+
+            // Render files in current level
+            if (structure._files) {
+                structure._files.forEach(file => {
+                    const fileName = file.name;
+                    const fileSize = formatFileSize(file.size);
+                    const fileIcon = getFileIcon(fileName);
+
+                    html += `
+                        <div class="tree-item file">
+                            <span class="tree-indent" style="width: ${level * 20}px"></span>
+                            <span class="tree-icon">${fileIcon}</span>
+                            <span>${fileName}</span>
+                            <span style="margin-left: auto; color: #8b949e; font-size: 12px;">${fileSize}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            return html;
+        }
+
+        function countFiles(structure) {
+            let count = 0;
+
+            if (structure._files) {
+                count += structure._files.length;
+            }
+
+            Object.keys(structure).forEach(key => {
+                if (key !== '_files') {
+                    count += countFiles(structure[key]);
+                }
+            });
+
+            return count;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        function getFileIcon(fileName) {
+            const ext = fileName.split('.').pop().toLowerCase();
+            const iconMap = {
+                'js': '📄',
+                'ts': '📘',
+                'html': '🌐',
+                'css': '🎨',
+                'json': '📋',
+                'md': '📝',
+                'txt': '📄',
+                'png': '🖼️',
+                'jpg': '🖼️',
+                'jpeg': '🖼️',
+                'gif': '🖼️',
+                'svg': '🎨',
+                'pdf': '📕',
+                'zip': '📦',
+                'py': '🐍',
+                'java': '☕',
+                'cpp': '⚙️',
+                'c': '⚙️'
+            };
+            return iconMap[ext] || '📄';
+        }
+
+        // GitHub Authentication
+        document.getElementById('validateToken').addEventListener('click', async function() {
+            const token = document.getElementById('githubToken').value.trim();
+            if (!token) {
+                showAlert('Please enter a GitHub token', 'error', 'tokenStatus');
+                return;
+            }
+
+            this.innerHTML = '<div class="loading"><div class="spinner"></div>Validating...</div>';
+            this.disabled = true;
+
+            try {
+                state.token = token;
+                const user = await makeGitHubRequest('/user');
+                state.user = user;
+
+                document.getElementById('tokenStatus').innerHTML = `
+                    <div class="status-indicator status-success">
+                        ✅ Authenticated as ${user.login}
+                    </div>
+                `;
+                showElement('tokenStatus');
+
+                if (state.selectedFiles.length > 0) {
+                    showElement('repoManagement');
+                }
+
+                await loadRepositories();
+
+            } catch (error) {
+                document.getElementById('tokenStatus').innerHTML = `
+                    <div class="status-indicator status-error">
+                        ❌ ${error.message}
+                    </div>
+                `;
+                showElement('tokenStatus');
+                state.token = '';
+            } finally {
+                this.innerHTML = '🔍 Validate Token';
+                this.disabled = false;
+            }
+        });
+
+        // Repository Management
+        async function loadRepositories() {
+            try {
+                const repos = await makeGitHubRequest('/user/repos?per_page=100&sort=updated');
+                state.repositories = repos;
+                displayRepositories(repos);
+            } catch (error) {
+                showAlert(`Failed to load repositories: ${error.message}`, 'error');
+            }
+        }
+
+        function displayRepositories(repos) {
+            const container = document.getElementById('repoList');
+
+            if (repos.length === 0) {
+                container.innerHTML = '<p>No repositories found.</p>';
+                return;
+            }
+
+            const tableHTML = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Repository</th>
+                            <th>Last Commit</th>
+                            <th>Visibility</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${repos.map(repo => `
+                            <tr>
+                                <td>
+                                    <input type="radio" name="selectedRepo" value="${repo.full_name}"
+                                           data-repo='${JSON.stringify(repo)}'>
+                                </td>
+                                <td>
+                                    <strong>${repo.name}</strong><br>
+                                    <small>${repo.description || 'No description'}</small>
+                                </td>
+                                <td>
+                                    ${new Date(repo.updated_at).toLocaleDateString()}<br>
+                                    <small>${repo.default_branch}</small>
+                                </td>
+                                <td>
+                                    <span class="status-indicator ${repo.private ? 'status-warning' : 'status-success'}">
+                                        ${repo.private ? '🔒 Private' : '🔓 Public'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-secondary" onclick="selectRepository('${repo.full_name}')">
+                                        Select
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = tableHTML;
+        }
+
+        // Repository Search
+        document.getElementById('repoSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredRepos = state.repositories.filter(repo =>
+                repo.name.toLowerCase().includes(searchTerm) ||
+                (repo.description && repo.description.toLowerCase().includes(searchTerm))
+            );
+            displayRepositories(filteredRepos);
+        });
+
+        // Tab Management
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.dataset.tab;
+
+                // Update tab appearance
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                // Show corresponding content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`${tabName}Tab`).classList.add('active');
+            });
+        });
+
+        // Repository Selection
+        async function selectRepository(fullName) {
+            const repo = state.repositories.find(r => r.full_name === fullName);
+            if (!repo) return;
+
+            state.selectedRepo = repo;
+
+            // Load branches for selected repository
+            await loadBranches(repo.owner.login, repo.name);
+
+            showElement('branchSelection');
+            showElement('actionSelection');
+
+            showAlert(`Selected repository: ${repo.full_name}`, 'success');
+        }
+
+        // Branch Management
+        async function loadBranches(owner, repo) {
+            try {
+                const branches = await makeGitHubRequest(`/repos/${owner}/${repo}/branches`);
+                const branchSelect = document.getElementById('branchSelect');
+
+                branchSelect.innerHTML = branches.map(branch =>
+                    `<option value="${branch.name}" ${branch.name === 'main' || branch.name === 'master' ? 'selected' : ''}>
+                        ${branch.name}
+                    </option>`
+                ).join('');
+
+                state.selectedBranch = branchSelect.value;
+
+            } catch (error) {
+                showAlert(`Failed to load branches: ${error.message}`, 'error');
+            }
+        }
+
+        document.getElementById('branchSelect').addEventListener('change', function() {
+            state.selectedBranch = this.value;
+        });
+
+        // Direct Repository URL
+        document.getElementById('validateUrl').addEventListener('click', async function() {
+            const url = document.getElementById('repoUrl').value.trim();
+            const urlPattern = /^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/?$/;
+            const match = url.match(urlPattern);
+
+            if (!match) {
+                document.getElementById('urlStatus').innerHTML = `
+                    <div class="status-indicator status-error">
+                        ❌ Invalid GitHub repository URL
+                    </div>
+                `;
+                showElement('urlStatus');
+                return;
+            }
+
+            const [, owner, repoName] = match;
+
+            this.innerHTML = '<div class="loading"><div class="spinner"></div>Validating...</div>';
+            this.disabled = true;
+
+            try {
+                const repo = await makeGitHubRequest(`/repos/${owner}/${repoName}`);
+                state.selectedRepo = repo;
+
+                document.getElementById('urlStatus').innerHTML = `
+                    <div class="status-indicator status-success">
+                        ✅ Repository found: ${repo.full_name}
+                    </div>
+                `;
+                showElement('urlStatus');
+
+                await loadBranches(owner, repoName);
+                showElement('branchSelection');
+                showElement('actionSelection');
+
+            } catch (error) {
+                document.getElementById('urlStatus').innerHTML = `
+                    <div class="status-indicator status-error">
+                        ❌ ${error.message}
+                    </div>
+                `;
+                showElement('urlStatus');
+            } finally {
+                this.innerHTML = '✅ Validate Repository';
+                this.disabled = false;
+            }
+        });
+
+        // Repository Creation
+        document.getElementById('createRepo').addEventListener('click', async function() {
+            const name = document.getElementById('newRepoName').value.trim();
+            const description = document.getElementById('newRepoDescription').value.trim();
+            const isPrivate = document.getElementById('newRepoVisibility').value === 'true';
+
+            if (!name) {
+                showAlert('Repository name is required', 'error', 'createStatus');
+                return;
+            }
+
+            this.innerHTML = '<div class="loading"><div class="spinner"></div>Creating...</div>';
+            this.disabled = true;
+
+            try {
+                const repo = await makeGitHubRequest('/user/repos', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        name,
+                        description,
+                        private: isPrivate,
+                        auto_init: true
+                    })
+                });
+
+                state.selectedRepo = repo;
+
+                document.getElementById('createStatus').innerHTML = `
+                    <div class="status-indicator status-success">
+                        ✅ Repository created: ${repo.full_name}
+                    </div>
+                `;
+                showElement('createStatus');
+
+                // Clear form
+                document.getElementById('newRepoName').value = '';
+                document.getElementById('newRepoDescription').value = '';
+
+                // Load branches and show next steps
+                await loadBranches(repo.owner.login, repo.name);
+                showElement('branchSelection');
+                showElement('actionSelection');
+
+                // Refresh repository list
+                await loadRepositories();
+
+            } catch (error) {
+                document.getElementById('createStatus').innerHTML = `
+                    <div class="status-indicator status-error">
+                        ❌ ${error.message}
+                    </div>
+                `;
+                showElement('createStatus');
+            } finally {
+                this.innerHTML = '➕ Create Repository';
+                this.disabled = false;
+            }
+        });
+
+        // Action Selection
+        document.querySelectorAll('.radio-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const action = this.dataset.action;
+                const radio = this.querySelector('input[type="radio"]');
+
+                // Update visual selection
+                document.querySelectorAll('.radio-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                radio.checked = true;
+
+                // Show/hide relevant options
+                hideElement('commitOptions');
+                hideElement('prOptions');
+
+                if (action === 'commit') {
+                    showElement('commitOptions');
+                } else if (action === 'pr') {
+                    showElement('prOptions');
+                }
+
+                // Enable execute button
+                document.getElementById('executeAction').disabled = false;
+            });
+        });
+
+        // Execute Action
+        document.getElementById('executeAction').addEventListener('click', async function() {
+            const selectedAction = document.querySelector('input[name="action"]:checked');
+            if (!selectedAction || !state.selectedRepo || state.selectedFiles.length === 0) {
+                showAlert('Please select files, repository, and action', 'error');
+                return;
+            }
+
+            // Show confirmation modal
+            await showConfirmationModal(selectedAction.value);
+        });
+
+        // Confirmation Modal Functions
+        async function showConfirmationModal(action) {
+            const modal = document.getElementById('confirmationModal');
+            const detailsContainer = document.getElementById('confirmationDetails');
+
+            // Analyze files for changes
+            const fileAnalysis = await analyzeFileChanges();
+
+            const actionNames = {
+                'push': 'Push Files',
+                'commit': 'Push and Commit',
+                'pr': 'Create Pull Request'
+            };
+
+            let commitMessage = '';
+            let branchInfo = '';
+
+            if (action === 'commit') {
+                commitMessage = document.getElementById('commitMessage').value.trim() || 'Update files via WALEED-GITHUB';
+            } else if (action === 'pr') {
+                const branchName = document.getElementById('prBranch').value.trim();
+                const prTitle = document.getElementById('prTitle').value.trim();
+                commitMessage = `Add files for ${prTitle}`;
+                branchInfo = `<p><strong>New Branch:</strong> ${branchName}</p>
+                             <p><strong>PR Title:</strong> ${prTitle}</p>`;
+            }
+
+            detailsContainer.innerHTML = `
+                <div class="report-section">
+                    <div class="report-header">
+                        <span class="report-title">Operation Details</span>
+                    </div>
+                    <p><strong>Action:</strong> ${actionNames[action]}</p>
+                    <p><strong>Repository:</strong> ${state.selectedRepo.full_name}</p>
+                    <p><strong>Target Branch:</strong> ${state.selectedBranch}</p>
+                    ${branchInfo}
+                    ${commitMessage ? `<p><strong>Commit Message:</strong> ${commitMessage}</p>` : ''}
+                </div>
+
+                <div class="report-section">
+                    <div class="report-header">
+                        <span class="report-title">File Changes Summary</span>
+                    </div>
+                    <div class="report-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: #3fb950;">${fileAnalysis.newFiles.length}</div>
+                            <div class="stat-label">New Files</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: #d29922;">${fileAnalysis.modifiedFiles.length}</div>
+                            <div class="stat-label">Modified Files</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: #58a6ff;">${state.selectedFiles.length}</div>
+                            <div class="stat-label">Total Files</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-section">
+                    <div class="report-header">
+                        <span class="report-title">Files to be ${action === 'pr' ? 'Added to New Branch' : 'Committed'}</span>
+                    </div>
+                    <div class="file-list">
+                        ${state.selectedFiles.map(file => {
+                            const path = file.webkitRelativePath || file.name;
+                            const isModified = fileAnalysis.modifiedFiles.includes(path);
+                            const statusIcon = isModified ? '📝' : '➕';
+                            const statusText = isModified ? 'Modified' : 'New';
+                            const statusColor = isModified ? '#d29922' : '#3fb950';
+
+                            return `
+                                <div class="file-list-item">
+                                    <span>${statusIcon} ${path}</span>
+                                    <span style="color: ${statusColor}; font-size: 12px;">${statusText}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <span>⚠️</span>
+                    <span>This operation will ${action === 'push' ? 'upload files to' : 'create a commit in'} the repository. Please review the changes carefully before proceeding.</span>
+                </div>
+            `;
+
+            modal.classList.add('show');
+
+            // Set up confirmation handler
+            document.getElementById('confirmExecute').onclick = async function() {
+                closeConfirmationModal();
+                await executeConfirmedAction(action);
+            };
+        }
+
+        function closeConfirmationModal() {
+            document.getElementById('confirmationModal').classList.remove('show');
+        }
+
+        async function analyzeFileChanges() {
+            const newFiles = [];
+            const modifiedFiles = [];
+
+            if (!state.selectedRepo) {
+                return { newFiles: state.selectedFiles.map(f => f.webkitRelativePath || f.name), modifiedFiles: [] };
+            }
+
+            // Check which files already exist in the repository
+            for (const file of state.selectedFiles) {
+                const path = file.webkitRelativePath || file.name;
+                try {
+                    await makeGitHubRequest(`/repos/${state.selectedRepo.owner.login}/${state.selectedRepo.name}/contents/${path}?ref=${state.selectedBranch}`);
+                    modifiedFiles.push(path);
+                } catch (error) {
+                    newFiles.push(path);
+                }
+            }
+
+            return { newFiles, modifiedFiles };
+        }
+
+        async function executeConfirmedAction(action) {
+            showElement('progressSection');
+            showElement('progressDetails');
+            hideElement('reportSection');
+
+            updateProgress(0, 'Starting operation...');
+            initializeProgressDetails();
+
+            const startTime = Date.now();
+            let operationResult = null;
+
+            try {
+                switch (action) {
+                    case 'push':
+                        operationResult = await handlePushOnly();
+                        break;
+                    case 'commit':
+                        operationResult = await handlePushAndCommit();
+                        break;
+                    case 'pr':
+                        operationResult = await handleCreatePullRequest();
+                        break;
+                }
+
+                const endTime = Date.now();
+                const duration = ((endTime - startTime) / 1000).toFixed(1);
+
+                updateProgress(100, 'Operation completed successfully!');
+                showAlert('Operation completed successfully!', 'success');
+
+                // Generate final report
+                generateFinalReport(operationResult, duration, action);
+
+            } catch (error) {
+                updateProgress(0, `Error: ${error.message}`);
+                showAlert(`Operation failed: ${error.message}`, 'error');
+                updateProgressDetails('error', `Operation failed: ${error.message}`);
+            }
+        }
+
+        // Progress Tracking Functions
+        function initializeProgressDetails() {
+            const container = document.getElementById('progressDetails');
+            container.innerHTML = `
+                <h3>📊 Detailed Progress</h3>
+                <div id="progressList"></div>
+            `;
+        }
+
+        function updateProgressDetails(status, message, fileName = null) {
+            const progressList = document.getElementById('progressList');
+            if (!progressList) return;
+
+            const timestamp = new Date().toLocaleTimeString();
+            const statusIcons = {
+                'processing': '⏳',
+                'success': '✅',
+                'error': '❌',
+                'info': 'ℹ️'
+            };
+
+            const statusColors = {
+                'processing': '#d29922',
+                'success': '#3fb950',
+                'error': '#f85149',
+                'info': '#58a6ff'
+            };
+
+            const progressItem = document.createElement('div');
+            progressItem.className = 'progress-item';
+            progressItem.innerHTML = `
+                <div class="progress-file">
+                    <span style="color: ${statusColors[status]};">${statusIcons[status]}</span>
+                    ${fileName ? `<strong>${fileName}</strong> - ` : ''}${message}
+                </div>
+                <div class="progress-status">
+                    <small style="color: #8b949e;">${timestamp}</small>
+                </div>
+            `;
+
+            progressList.appendChild(progressItem);
+            progressList.scrollTop = progressList.scrollHeight;
+        }
+
+        // File Upload Functions
+        async function handlePushOnly() {
+            return await uploadFiles(state.selectedBranch);
+        }
+
+        async function handlePushAndCommit() {
+            const commitMessage = document.getElementById('commitMessage').value.trim() ||
+                                'Update files via WALEED-GITHUB';
+
+            return await uploadFiles(state.selectedBranch, commitMessage);
+        }
+
+        async function handleCreatePullRequest() {
+            const branchName = document.getElementById('prBranch').value.trim();
+            const prTitle = document.getElementById('prTitle').value.trim();
+
+            if (!branchName || !prTitle) {
+                throw new Error('Branch name and PR title are required');
+            }
+
+            // Create new branch
+            updateProgress(10, 'Creating new branch...');
+            updateProgressDetails('info', `Creating new branch: ${branchName}`);
+            await createBranch(branchName);
+
+            // Upload files to new branch
+            updateProgress(30, 'Uploading files to new branch...');
+            const uploadResult = await uploadFiles(branchName, `Add files for ${prTitle}`);
+
+            // Create pull request
+            updateProgress(80, 'Creating pull request...');
+            updateProgressDetails('info', 'Creating pull request...');
+            const pr = await createPullRequest(branchName, prTitle);
+
+            return {
+                ...uploadResult,
+                pullRequest: pr,
+                newBranch: branchName
+            };
+        }
+
+        async function createBranch(branchName) {
+            const { owner, name } = state.selectedRepo;
+
+            // Get the SHA of the base branch
+            const baseBranch = await makeGitHubRequest(`/repos/${owner.login}/${name}/git/refs/heads/${state.selectedBranch}`);
+
+            // Create new branch
+            await makeGitHubRequest(`/repos/${owner.login}/${name}/git/refs`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    ref: `refs/heads/${branchName}`,
+                    sha: baseBranch.object.sha
+                })
+            });
+        }
+
+        async function createPullRequest(branchName, title) {
+            const { owner, name } = state.selectedRepo;
+
+            const pr = await makeGitHubRequest(`/repos/${owner.login}/${name}/pulls`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    title,
+                    head: branchName,
+                    base: state.selectedBranch,
+                    body: `Pull request created via WALEED-GITHUB\n\nFiles uploaded: ${state.selectedFiles.length} files`
+                })
+            });
+
+            updateProgressDetails('success', `Pull request created: #${pr.number}`);
+            showAlert(`Pull request created: <a href="${pr.html_url}" target="_blank">#${pr.number}</a>`, 'success');
+
+            return pr;
+        }
+
+        // Final Report Generation
+        function generateFinalReport(operationResult, duration, action) {
+            const reportContainer = document.getElementById('reportContent');
+            const timestamp = new Date().toLocaleString();
+
+            const actionNames = {
+                'push': 'Push Files',
+                'commit': 'Push and Commit',
+                'pr': 'Create Pull Request'
+            };
+
+            const successRate = operationResult.totalFiles > 0
+                ? ((operationResult.successful.length / operationResult.totalFiles) * 100).toFixed(1)
+                : 0;
+
+            let commitInfo = '';
+            if (operationResult.commitSha) {
+                const commitUrl = `https://github.com/${operationResult.repository}/commit/${operationResult.commitSha}`;
+                commitInfo = `
+                    <div class="report-section">
+                        <div class="report-header">
+                            <span class="report-title">📝 Commit Information</span>
+                        </div>
+                        <p><strong>Commit SHA:</strong> <code>${operationResult.commitSha}</code></p>
+                        <p><strong>Commit Date:</strong> ${timestamp}</p>
+                        <p><strong>Branch:</strong> ${operationResult.branch}</p>
+                        <a href="${commitUrl}" target="_blank" class="commit-link">
+                            🔗 View Commit on GitHub
+                        </a>
+                    </div>
+                `;
+            }
+
+            let prInfo = '';
+            if (operationResult.pullRequest) {
+                prInfo = `
+                    <div class="report-section">
+                        <div class="report-header">
+                            <span class="report-title">🔀 Pull Request Information</span>
+                        </div>
+                        <p><strong>PR Number:</strong> #${operationResult.pullRequest.number}</p>
+                        <p><strong>PR Title:</strong> ${operationResult.pullRequest.title}</p>
+                        <p><strong>New Branch:</strong> ${operationResult.newBranch}</p>
+                        <p><strong>Base Branch:</strong> ${state.selectedBranch}</p>
+                        <a href="${operationResult.pullRequest.html_url}" target="_blank" class="commit-link">
+                            🔗 View Pull Request on GitHub
+                        </a>
+                    </div>
+                `;
+            }
+
+            reportContainer.innerHTML = `
+                <div class="report-section">
+                    <div class="report-header">
+                        <span class="report-title">✅ Operation Summary</span>
+                    </div>
+                    <p><strong>Action:</strong> ${actionNames[action]}</p>
+                    <p><strong>Repository:</strong> ${operationResult.repository}</p>
+                    <p><strong>Completed:</strong> ${timestamp}</p>
+                    <p><strong>Duration:</strong> ${duration} seconds</p>
+                </div>
+
+                <div class="report-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #58a6ff;">${operationResult.totalFiles}</div>
+                        <div class="stat-label">Total Files</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #3fb950;">${operationResult.successful.length}</div>
+                        <div class="stat-label">Successful</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #f85149;">${operationResult.failed.length}</div>
+                        <div class="stat-label">Failed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #d29922;">${successRate}%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                </div>
+
+                ${commitInfo}
+                ${prInfo}
+
+                <div class="report-section">
+                    <div class="report-header">
+                        <span class="report-title">✅ Successfully Uploaded Files</span>
+                    </div>
+                    <div class="file-list">
+                        ${operationResult.successful.map(file => `
+                            <div class="file-list-item">
+                                <span>${file.isUpdate ? '📝' : '➕'} ${file.path}</span>
+                                <span style="color: #8b949e; font-size: 12px;">${formatFileSize(file.size)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                ${operationResult.failed.length > 0 ? `
+                    <div class="report-section">
+                        <div class="report-header">
+                            <span class="report-title">❌ Failed Uploads</span>
+                        </div>
+                        <div class="file-list">
+                            ${operationResult.failed.map(file => `
+                                <div class="file-list-item">
+                                    <span>❌ ${file.path}</span>
+                                    <span style="color: #f85149; font-size: 12px;">${file.error}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+            `;
+
+            showElement('reportSection');
+
+            // Scroll to report
+            document.getElementById('reportSection').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        async function uploadFiles(targetBranch, commitMessage = null) {
+            const { owner, name } = state.selectedRepo;
+            const totalFiles = state.selectedFiles.length;
+            let uploadedFiles = 0;
+            const successfulUploads = [];
+            const failedUploads = [];
+            let lastCommitSha = null;
+
+            updateProgress(20, `Uploading ${totalFiles} files...`);
+            updateProgressDetails('info', `Starting upload of ${totalFiles} files to ${targetBranch} branch`);
+
+            for (const file of state.selectedFiles) {
+                const path = file.webkitRelativePath || file.name;
+                updateProgressDetails('processing', 'Uploading...', path);
+
+                try {
+                    const content = await fileToBase64(file);
+
+                    // Check if file exists
+                    let sha = null;
+                    let isUpdate = false;
+                    try {
+                        const existingFile = await makeGitHubRequest(`/repos/${owner.login}/${name}/contents/${path}?ref=${targetBranch}`);
+                        sha = existingFile.sha;
+                        isUpdate = true;
+                    } catch (error) {
+                        // File doesn't exist, which is fine
+                    }
+
+                    // Upload file
+                    const uploadData = {
+                        message: commitMessage || `Update ${path}`,
+                        content: content,
+                        branch: targetBranch
+                    };
+
+                    if (sha) {
+                        uploadData.sha = sha; // Required for updating existing files
+                    }
+
+                    const response = await makeGitHubRequest(`/repos/${owner.login}/${name}/contents/${path}`, {
+                        method: 'PUT',
+                        body: JSON.stringify(uploadData)
+                    });
+
+                    // Store the commit SHA from the response
+                    if (response.commit && response.commit.sha) {
+                        lastCommitSha = response.commit.sha;
+                    }
+
+                    successfulUploads.push({
+                        path,
+                        size: file.size,
+                        isUpdate,
+                        commitSha: response.commit?.sha
+                    });
+
+                    uploadedFiles++;
+                    const progress = 20 + (uploadedFiles / totalFiles) * 60;
+                    updateProgress(progress, `Uploaded ${uploadedFiles}/${totalFiles} files...`);
+                    updateProgressDetails('success', isUpdate ? 'Updated successfully' : 'Uploaded successfully', path);
+
+                    // Small delay to avoid rate limiting
+                    await new Promise(resolve => setTimeout(resolve, 100));
+
+                } catch (error) {
+                    console.error(`Failed to upload ${file.name}:`, error);
+                    failedUploads.push({
+                        path,
+                        error: error.message,
+                        size: file.size
+                    });
+                    updateProgressDetails('error', `Failed: ${error.message}`, path);
+                    showAlert(`Failed to upload ${file.name}: ${error.message}`, 'warning');
+                }
+            }
+
+            updateProgress(90, 'Finalizing...');
+            updateProgressDetails('info', `Upload completed: ${successfulUploads.length} successful, ${failedUploads.length} failed`);
+
+            return {
+                successful: successfulUploads,
+                failed: failedUploads,
+                totalFiles,
+                commitSha: lastCommitSha,
+                branch: targetBranch,
+                repository: state.selectedRepo.full_name
+            };
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    // Remove the data:*/*;base64, prefix
+                    const base64 = reader.result.split(',')[1];
+                    resolve(base64);
+                };
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default commit message
+            document.getElementById('commitMessage').value = 'Update files via WALEED-GITHUB';
+
+            // Add file input change handler for single files
+            const fileInput = document.getElementById('fileInput');
+            fileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    // Update button text to show selection
+                    const button = this.parentElement.querySelector('.btn');
+                    button.innerHTML = `📂 ${this.files.length} file(s) selected`;
+                }
+            });
+
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey || e.metaKey) {
+                    switch (e.key) {
+                        case 'Enter':
+                            if (!document.getElementById('executeAction').disabled) {
+                                document.getElementById('executeAction').click();
+                            }
+                            break;
+                    }
+                }
+            });
+
+            console.log('WALEED-GITHUB initialized successfully!');
+        });
+    </script>
+</body>
+</html>
